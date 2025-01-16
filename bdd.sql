@@ -48,8 +48,15 @@ INSERT INTO détails_commande (`référence_de_commande`,`référence_du_produit
             ('2','4','6');
 
 CREATE VIEW détails as (select client.prenom, client.nom, commande.date, produit.nom, détails_commande.quantité
-    left join commande on client.commande_id = commande.id,
-    left join détails_commande on client.détails_commande_id = détails_commande.id,
-    left join produit on client.produit_id = produit.id); 
+    left join client on client.id = commande.reférence_de_client
+    left join commande on commande.id = détails_commande.référence_de_commande
+    left join détails_commande on détails_commande.référence_du_produit = produit.id); 
+
+
+CREATE VIEW détails as (select client.prenom, client.nom, commande.date, produit.nom AS produit, détails_commande.quantité 
+from client 
+left join commande on client.id = commande.reférence_de_client 
+left join détails_commande on commande.id = détails_commande.référence_de_commande 
+left join produit on détails_commande.référence_du_produit = produit.id); 
 
     update référence_du_produit set produit.nom_id = 2 where produit.nom="Mistral";
